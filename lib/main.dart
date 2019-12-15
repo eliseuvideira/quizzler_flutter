@@ -26,6 +26,28 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final List<Icon> scoreKeeper = [
+    _buildAnswer(true),
+    _buildAnswer(false),
+    _buildAnswer(true),
+    _buildAnswer(false),
+    _buildAnswer(true),
+    _buildAnswer(false),
+  ];
+
+  static Icon _buildAnswer(bool isCorrect) {
+    if (isCorrect) {
+      return Icon(
+        Icons.check,
+        color: Colors.green,
+      );
+    }
+    return Icon(
+      Icons.close,
+      color: Colors.red,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -57,7 +79,11 @@ class _HomePageState extends State<HomePage> {
                 'True',
                 style: TextStyle(color: Colors.white, fontSize: 20.0),
               ),
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  scoreKeeper.add(_buildAnswer(true));
+                });
+              },
             ),
           ),
         ),
@@ -70,10 +96,17 @@ class _HomePageState extends State<HomePage> {
                 'False',
                 style: TextStyle(color: Colors.white, fontSize: 20.0),
               ),
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  scoreKeeper.add(_buildAnswer(false));
+                });
+              },
             ),
           ),
         ),
+        Row(
+          children: scoreKeeper,
+        )
       ],
     );
   }
