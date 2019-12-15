@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
 
   answer(bool choice) {
     setState(() {
-      scoreKeeper.add(_buildAnswer(question.isCorrent(choice)));
+      scoreKeeper.add(_buildAnswer(question.isCorrect(choice)));
       question.next();
       print(question.finished);
       if (question.finished) {
