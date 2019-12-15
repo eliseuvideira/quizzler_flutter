@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler/question_manager.dart';
 
 void main() => runApp(App());
 
@@ -26,14 +27,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Icon> scoreKeeper = [
-    _buildAnswer(true),
-    _buildAnswer(false),
-    _buildAnswer(true),
-    _buildAnswer(false),
-    _buildAnswer(true),
-    _buildAnswer(false),
-  ];
+  final List<Icon> scoreKeeper = [];
+
+  var question = QuestionManager();
 
   static Icon _buildAnswer(bool isCorrect) {
     if (isCorrect) {
@@ -48,6 +44,18 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  answer(bool choice) {
+    setState(() {
+      scoreKeeper.add(_buildAnswer(question.isCorrent(choice)));
+      question.next();
+      print(question.finished);
+      if (question.finished) {
+        scoreKeeper.clear();
+        question.reset();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -60,7 +68,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go',
+                question.text,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -80,9 +88,7 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(color: Colors.white, fontSize: 20.0),
               ),
               onPressed: () {
-                setState(() {
-                  scoreKeeper.add(_buildAnswer(true));
-                });
+                answer(true);
               },
             ),
           ),
@@ -97,9 +103,7 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(color: Colors.white, fontSize: 20.0),
               ),
               onPressed: () {
-                setState(() {
-                  scoreKeeper.add(_buildAnswer(false));
-                });
+                answer(false);
               },
             ),
           ),
